@@ -56,9 +56,11 @@ void gameover(){
   noLoop();
   textSize(200);
   stroke(0);
+  fill(0);
+  rect(25,250,1150,175);
   fill(255,0,0);
   textAlign(CENTER);
-  text("GAME OVER",600,400);
+  text("GAME OVER",width/2,height/2+height/12);
 }
 
 boolean testWin(){
@@ -75,16 +77,18 @@ void winner(){
   noLoop();
   textSize(200);
   stroke(0);
+  fill(0);
+  rect(25,250,1150,175);
   fill(0,100,0);
   textAlign(CENTER);
-  text("You Win!!!",600,400);
+  text("You Win!!!",width/2,height/2+height/12);
 }
 
 class block{
   int x,y,posX,posY,around=-1;
   boolean bomb,hit=false,flag=false;
   block(int i,int j){
-    if(Math.random()>.75){
+    if(Math.random()>.85){
       bomb=true;
     }
     x=w*i;
@@ -95,7 +99,7 @@ class block{
   void show(){
      if(hit==true){
       stroke(0);
-      fill(220);
+      fill(109,62,0);
       rect(x,y,w,w);
     }
     if(bomb==true){
@@ -105,14 +109,14 @@ class block{
     }
     else{
       textSize(30);
-      fill(255,0,0);
+      fill(around*25+125);
       if(around>0){
         text(around,x+(w/3),y+(2*(w/3)));
       }
     }
     if(hit==false){
-      stroke(0);
-      fill(255);
+      stroke(39,142,15);
+      fill(57,204,24);
       rect(x,y,w,w);
     }
     if(flag==true){
@@ -162,22 +166,10 @@ class block{
         for(int j=posY-1;j<=posY+1;j++){
           if(j>=0&&j<rows){
             if(blocks[i][j].getBomb()){
-              around++;
-            }
-          }
-        }
-      }
-    }
+              around++;}}}}}
     if(around==0){
       for(int i=posX-1;i<=posX+1;i++){
         if(i>=0&&i<cols){
           for(int j=posY-1;j<=posY+1;j++){
             if(j>=0&&j<rows&&blocks[i][j].getHit()==false){
-              blocks[i][j].reveal();
-            }
-          }
-        }
-      }
-    }
-  }
-}
+              blocks[i][j].reveal();}}}}}}}
