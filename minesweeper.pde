@@ -1,9 +1,9 @@
-int rows=16,cols=24,w=50;
+int rows=14,cols=24,w=50;
 block[][] blocks=new block[cols][rows];
 boolean go=false,win=false;
 
 void setup(){
-  size(1201,801);
+  size(1201,701);
   background(180);
   for(int i=0;i<cols;i++){
     for(int j=0;j<rows;j++){
@@ -84,7 +84,7 @@ class block{
   int x,y,posX,posY,around=-1;
   boolean bomb,hit=false,flag=false;
   block(int i,int j){
-    if(Math.random()>.99){
+    if(Math.random()>.75){
       bomb=true;
     }
     x=w*i;
