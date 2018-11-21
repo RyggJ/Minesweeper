@@ -1,6 +1,6 @@
 int rows=16,cols=24,w=50;
 block[][] blocks=new block[cols][rows];
-boolean go=false;
+boolean go=false,win=false;
 
 void setup(){
   size(1201,801);
@@ -19,10 +19,16 @@ void draw(){
       if(blocks[i][j].getHit()&&blocks[i][j].getBomb()){
         go=true;
       }
+      if(testWin()){
+        win=true;
+      }
     }
   }
   if(go==true){
     gameover();
+  }
+  if(win==true){
+    winner();
   }
 }
 
@@ -55,11 +61,30 @@ void gameover(){
   text("GAME OVER",600,400);
 }
 
+boolean testWin(){
+  for(int i=0;i<cols;i++){
+    for(int j=0;j<rows;j++){
+      if((blocks[i][j].getBomb()==false&&blocks[i][j].getHit())||blocks[i][j].getBomb()){}
+      else{return false;}
+    }
+  }
+  return true;
+}
+
+void winner(){
+  noLoop();
+  textSize(200);
+  stroke(0);
+  fill(0,100,0);
+  textAlign(CENTER);
+  text("You Win!!!",600,400);
+}
+
 class block{
   int x,y,posX,posY,around=-1;
   boolean bomb,hit=false,flag=false;
   block(int i,int j){
-    if(Math.random()>.75){
+    if(Math.random()>.99){
       bomb=true;
     }
     x=w*i;
