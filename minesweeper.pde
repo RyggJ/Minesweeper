@@ -1,6 +1,7 @@
-int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1,timer;
+int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1, timer;
 block[][] blocks=new block[cols][rows];
-boolean go=false, win=false, moved=false;
+konami k;
+boolean go=false, win=false, moved=false, konami=false;
 
 void setup() {
   size(1201, 701);
@@ -11,6 +12,7 @@ void setup() {
       blocks[i][j]=new block(i, j);
     }
   }
+  k=new konami();
 }
 
 void draw() {
@@ -26,10 +28,15 @@ void draw() {
     }
   }
   select();
-  if (go==true) {
+  k.konamiCheck();
+  if (konami) {
+    fill(200, 100, 50);
+    ellipse(200, 200, 200, 200);
+  }
+  if (go) {
     gameover();
   }
-  if (win==true) {
+  if (win) {
     winner();
   }
   if (keyPressed&&key=='r') {
@@ -105,8 +112,7 @@ void select() {
     if (!keyPressed) {
       moved=false;
       timer=0;
-    }
-    else{
+    } else {
       timer++;
     }
   }
@@ -206,8 +212,8 @@ class block {
   }
 
   void setFlag(boolean set) {
-    if (getHit()==false){
-    flag=set;
+    if (getHit()==false) {
+      flag=set;
     }
   }
 
@@ -240,6 +246,124 @@ class block {
             }
           }
         }
+      }
+    }
+  }
+}
+
+class konami {
+  boolean upOne=false, upTwo=false, downOne=false, downTwo=false, leftOne=false, rightOne=false, leftTwo=false, rightTwo=false, b=false, a=false, start=false;
+  boolean sOne=false, sTwo=false, sThree=false, sFour=false, sFive=false, sSix=false, sSeven=false, sEight=false, sNine=false, sTen=false;
+  boolean changed=false;
+  void konamiCheck() {
+    if (!konami) {
+      if (keyCode==UP&&!upOne) {
+        upOne=true;
+        changed=true;
+      }
+      if (upOne&&!keyPressed) {
+        sOne=true;
+        changed=false;
+      }
+      if (keyPressed&&keyCode==UP&&sOne) {
+        upTwo=true;
+        changed=true;
+      }
+      if (upTwo&&!keyPressed) {
+        sTwo=true;
+        changed=false;
+      }
+      if (keyPressed&&keyCode==DOWN&&sTwo) {
+        downOne=true;
+        changed=true;
+      }
+      if (downOne&&!keyPressed) {
+        sThree=true;
+        changed=false;
+      }
+      if (keyPressed&&keyCode==DOWN&&sThree) {
+        downTwo=true;
+        changed=true;
+      }
+      if (downTwo&&!keyPressed) {
+        sFour=true;
+        changed=false;
+      }
+      if (keyPressed&&keyCode==LEFT&&sFour) {
+        leftOne=true;
+        changed=true;
+      }
+      if (leftOne&&!keyPressed) {
+        sFive=true;
+        changed=false;
+      }
+      if (keyPressed&&keyCode==RIGHT&&sFive) {
+        rightOne=true;
+        changed=true;
+      }
+      if (rightOne&&!keyPressed) {
+        sSix=true;
+        changed=false;
+      }
+      if (keyPressed&&keyCode==LEFT&&sSix) {
+        leftTwo=true;
+        changed=true;
+      }
+      if (leftTwo&&!keyPressed) {
+        sSeven=true;
+        changed=false;
+      }
+      if (keyPressed&&keyCode==RIGHT&&sSeven) {
+        rightTwo=true;
+        changed=true;
+      }
+      if (rightTwo&&!keyPressed) {
+        sEight=true;
+        changed=false;
+      }
+      if (keyPressed&&key=='b'&&sEight) {
+        b=true;
+        changed=true;
+      }
+      if (b&&!keyPressed) {
+        sNine=true;
+        changed=false;
+      }
+      if (keyPressed&&key=='a'&&sNine) {
+        a=true;
+        changed=true;
+      }
+      if (a&&!keyPressed) {
+        sTen=true;
+        changed=false;
+      }
+      if (keyCode==SHIFT&&sTen) {
+        konami=true;
+      }
+      if (keyPressed&&!changed) {
+        fill(0);
+        rect(200, 200, 200, 200);
+        upOne=false;
+        upTwo=false;
+        downOne=false;
+        downTwo=false; 
+        leftOne=false;
+        rightOne=false;
+        leftTwo=false; 
+        rightTwo=false;
+        b=false; 
+        a=false;
+        start=false;
+        sOne=false;
+        sTwo=false;
+        sThree=false;
+        sFour=false;
+        sFive=false;
+        sSix=false;
+        sSeven=false;
+        sEight=false;
+        sNine=false;
+        sTen=false;
       }
     }
   }
