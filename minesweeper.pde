@@ -1,11 +1,13 @@
 int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1, timer;
 block[][] blocks=new block[cols][rows];
 boolean go=false, win=false, moved=false, konami=false;
+PImage okay;
 
 void setup() {
   size(1201, 701);
   background(180);
   textAlign(CENTER);
+  okay=loadImage("okay.png");
   for (int i=0; i<cols; i++) {
     for (int j=0; j<rows; j++) {
       blocks[i][j]=new block(i, j);
@@ -28,8 +30,10 @@ void draw() {
   select();
   konamiCheck();
   if (konami) {
-    fill(200, 100, 50);
-    ellipse(200, 200, 200, 200);
+    //fill(200, 100, 50);
+    //ellipse(200, 200, 200, 200);
+    noCursor();
+    image(okay,mouseX-20,mouseY-20);
   }
   if (go) {
     gameover();
