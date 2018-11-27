@@ -1,6 +1,5 @@
 int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1, timer;
 block[][] blocks=new block[cols][rows];
-konami k=new konami(10);
 boolean go=false, win=false, moved=false, konami=false;
 
 void setup() {
@@ -12,7 +11,6 @@ void setup() {
       blocks[i][j]=new block(i, j);
     }
   }
-  k=new konami(0);
 }
 
 void draw() {
@@ -28,7 +26,7 @@ void draw() {
     }
   }
   select();
-  k.konamiCheck();
+  konamiCheck();
   if (konami) {
     fill(200, 100, 50);
     ellipse(200, 200, 200, 200);
@@ -251,14 +249,11 @@ class block {
   }
 }
 
-class konami {
+//-----------------------------------------------------------------------------------
+
   boolean upOne=false, upTwo=false, downOne=false, downTwo=false, leftOne=false, rightOne=false, leftTwo=false, rightTwo=false, b=false, a=false, start=false;
   boolean sOne=false, sTwo=false, sThree=false, sFour=false, sFive=false, sSix=false, sSeven=false, sEight=false, sNine=false, sTen=false;
   boolean changed=false;
-  int useless;
-  konami(int num){
-    useless=num;
-  }
   void konamiCheck() {
     if (!konami) {
       if (keyCode==UP&&!upOne) {
@@ -371,4 +366,3 @@ class konami {
       }
     }
   }
-}
