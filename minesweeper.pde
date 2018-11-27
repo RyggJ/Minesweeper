@@ -1,6 +1,6 @@
 int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1, timer;
 block[][] blocks=new block[cols][rows];
-konami k;
+konami k=new konami();
 boolean go=false, win=false, moved=false, konami=false;
 
 void setup() {
@@ -12,7 +12,6 @@ void setup() {
       blocks[i][j]=new block(i, j);
     }
   }
-  k=new konami();
 }
 
 void draw() {
