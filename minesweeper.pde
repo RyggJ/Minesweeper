@@ -255,6 +255,8 @@ class konami {
   boolean upOne=false, upTwo=false, downOne=false, downTwo=false, leftOne=false, rightOne=false, leftTwo=false, rightTwo=false, b=false, a=false, start=false;
   boolean sOne=false, sTwo=false, sThree=false, sFour=false, sFive=false, sSix=false, sSeven=false, sEight=false, sNine=false, sTen=false;
   boolean changed=false;
+  konami(){
+  }
   void konamiCheck() {
     if (!konami) {
       if (keyCode==UP&&!upOne) {
