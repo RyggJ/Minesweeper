@@ -202,7 +202,9 @@ class block {
   }
 
   void setFlag(boolean set) {
+    if (getHit()==false){
     flag=set;
+    }
   }
 
   void reveal() {
