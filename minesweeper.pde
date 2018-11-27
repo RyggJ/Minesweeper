@@ -132,7 +132,7 @@ boolean testWin() {
 void winner() {
   textSize(200);
   stroke(0);
-  fill(0, 100);
+  fill(0, 200);
   rect(25, 250, 1150, 175);
   fill(0, 100, 0);
   text("You Win!!!", width/2, height/2+height/12);
