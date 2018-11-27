@@ -12,6 +12,7 @@ void setup() {
       blocks[i][j]=new block(i, j);
     }
   }
+  k=new konami();
 }
 
 void draw() {
