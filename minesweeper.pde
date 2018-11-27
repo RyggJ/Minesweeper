@@ -1,4 +1,4 @@
-int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1;
+int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1,timer;
 block[][] blocks=new block[cols][rows];
 boolean go=false, win=false, moved=false;
 
@@ -74,19 +74,19 @@ void select() {
   rect(sCol*w, sRow*w, w, w);
   strokeWeight(1);
   if (!go) {
-    if (keyPressed&&(key=='w'||keyCode==UP)&&sRow>0&&!moved) {
+    if (keyPressed&&(key=='w'||keyCode==UP)&&sRow>0&&(!moved||(timer>25&&timer%2==0))) {
       sRow--;
       moved=true;
     }
-    if (keyPressed&&(key=='a'||keyCode==LEFT)&&sCol>0&&!moved) {
+    if (keyPressed&&(key=='a'||keyCode==LEFT)&&sCol>0&&(!moved||(timer>25&&timer%2==0))) {
       sCol--;
       moved=true;
     }
-    if (keyPressed&&(key=='s'||keyCode==DOWN)&&sRow<rows-1&&!moved) {
+    if (keyPressed&&(key=='s'||keyCode==DOWN)&&sRow<rows-1&&(!moved||(timer>25&&timer%2==0))) {
       sRow++;
       moved=true;
     }
-    if (keyPressed&&(key=='d'||keyCode==RIGHT)&&sCol<cols-1&&!moved) {
+    if (keyPressed&&(key=='d'||keyCode==RIGHT)&&sCol<cols-1&&(!moved||(timer>25&&timer%2==0))) {
       sCol++;
       moved=true;
     }
@@ -104,6 +104,10 @@ void select() {
     }
     if (!keyPressed) {
       moved=false;
+      timer=0;
+    }
+    else{
+      timer++;
     }
   }
 }
