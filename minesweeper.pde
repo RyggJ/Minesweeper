@@ -340,8 +340,6 @@ class block {
         konami=true;
       }
       if (keyPressed&&!changed) {
-        fill(0);
-        rect(200, 200, 200, 200);
         upOne=false;
         upTwo=false;
         downOne=false;
