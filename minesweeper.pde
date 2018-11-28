@@ -1,6 +1,6 @@
 int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1, timer;
 block[][] blocks=new block[cols][rows];
-boolean go=false, win=true, moved=false, konami=false;
+boolean go=false, win=false, moved=false, konami=false;
 PImage okay;
 
 void setup() {
