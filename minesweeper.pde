@@ -1,6 +1,6 @@
 int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1, timer;
 block[][] blocks=new block[cols][rows];
-boolean go=false, win=false, moved=false, konami=false;
+boolean go=false, win=true, moved=false, konami=false;
 PImage okay;
 
 void setup() {
@@ -13,36 +13,50 @@ void setup() {
       blocks[i][j]=new block(i, j);
     }
   }
+  spots=new NormalParticle[500];
+  for (int i=0; i<500; i++) {
+    spots[i]=new NormalParticle();
+  }
 }
 
+
 void draw() {
-  for (int i=0; i<cols; i++) {
-    for (int j=0; j<rows; j++) {
-      blocks[i][j].show();
-      if (blocks[i][j].getHit()&&blocks[i][j].getBomb()) {
-        go=true;
-      }
-      if (testWin()) {
-        win=true;
+  if (!konami||!win) {
+    for (int i=0; i<cols; i++) {
+      for (int j=0; j<rows; j++) {
+        blocks[i][j].show();
+        if (blocks[i][j].getHit()&&blocks[i][j].getBomb()) {
+          go=true;
+        }
+        if (testWin()) {
+          win=true;
+        }
       }
     }
-  }
-  select();
-  konamiCheck();
-  if (konami) {
-    //fill(200, 100, 50);
-    //ellipse(200, 200, 200, 200);
-    noCursor();
-    image(okay,mouseX-20,mouseY-20);
-  }
-  if (go) {
-    gameover();
-  }
-  if (win) {
-    winner();
-  }
-  if (keyPressed&&key=='r') {
-    reset();
+    select();
+    konamiCheck();
+    if (konami) {
+      noCursor();
+      image(okay, mouseX-20, mouseY-20);
+    }
+    if (go) {
+      gameover();
+    }
+    if (win) {
+      winner();
+    }
+    if (keyPressed&&key=='r') {
+      reset();
+    }
+  } else {
+    frameRate(30);
+    for (int i=0; i<500; i++) {
+      spots[i].move();
+      spots[i].show();
+    }
+    fill(0, 0, 0, 80);
+    stroke(0);
+    rect(0, 0, width, height);
   }
 }
 
@@ -255,116 +269,150 @@ class block {
 
 //-----------------------------------------------------------------------------------
 
-  boolean upOne=false, upTwo=false, downOne=false, downTwo=false, leftOne=false, rightOne=false, leftTwo=false, rightTwo=false, b=false, a=false, start=false;
-  boolean sOne=false, sTwo=false, sThree=false, sFour=false, sFive=false, sSix=false, sSeven=false, sEight=false, sNine=false, sTen=false;
-  boolean changed=false;
-  void konamiCheck() {
-    if (!konami) {
-      if (keyCode==UP&&!upOne) {
-        upOne=true;
-        changed=true;
-      }
-      if (upOne&&!keyPressed) {
-        sOne=true;
-        changed=false;
-      }
-      if (keyPressed&&keyCode==UP&&sOne) {
-        upTwo=true;
-        changed=true;
-      }
-      if (upTwo&&!keyPressed) {
-        sTwo=true;
-        changed=false;
-      }
-      if (keyPressed&&keyCode==DOWN&&sTwo) {
-        downOne=true;
-        changed=true;
-      }
-      if (downOne&&!keyPressed) {
-        sThree=true;
-        changed=false;
-      }
-      if (keyPressed&&keyCode==DOWN&&sThree) {
-        downTwo=true;
-        changed=true;
-      }
-      if (downTwo&&!keyPressed) {
-        sFour=true;
-        changed=false;
-      }
-      if (keyPressed&&keyCode==LEFT&&sFour) {
-        leftOne=true;
-        changed=true;
-      }
-      if (leftOne&&!keyPressed) {
-        sFive=true;
-        changed=false;
-      }
-      if (keyPressed&&keyCode==RIGHT&&sFive) {
-        rightOne=true;
-        changed=true;
-      }
-      if (rightOne&&!keyPressed) {
-        sSix=true;
-        changed=false;
-      }
-      if (keyPressed&&keyCode==LEFT&&sSix) {
-        leftTwo=true;
-        changed=true;
-      }
-      if (leftTwo&&!keyPressed) {
-        sSeven=true;
-        changed=false;
-      }
-      if (keyPressed&&keyCode==RIGHT&&sSeven) {
-        rightTwo=true;
-        changed=true;
-      }
-      if (rightTwo&&!keyPressed) {
-        sEight=true;
-        changed=false;
-      }
-      if (keyPressed&&key=='b'&&sEight) {
-        b=true;
-        changed=true;
-      }
-      if (b&&!keyPressed) {
-        sNine=true;
-        changed=false;
-      }
-      if (keyPressed&&key=='a'&&sNine) {
-        a=true;
-        changed=true;
-      }
-      if (a&&!keyPressed) {
-        sTen=true;
-        changed=false;
-      }
-      if (keyCode==SHIFT&&sTen) {
-        konami=true;
-      }
-      if (keyPressed&&!changed) {
-        upOne=false;
-        upTwo=false;
-        downOne=false;
-        downTwo=false; 
-        leftOne=false;
-        rightOne=false;
-        leftTwo=false; 
-        rightTwo=false;
-        b=false; 
-        a=false;
-        start=false;
-        sOne=false;
-        sTwo=false;
-        sThree=false;
-        sFour=false;
-        sFive=false;
-        sSix=false;
-        sSeven=false;
-        sEight=false;
-        sNine=false;
-        sTen=false;
-      }
+boolean upOne=false, upTwo=false, downOne=false, downTwo=false, leftOne=false, rightOne=false, leftTwo=false, rightTwo=false, b=false, a=false, start=false;
+boolean sOne=false, sTwo=false, sThree=false, sFour=false, sFive=false, sSix=false, sSeven=false, sEight=false, sNine=false, sTen=false;
+boolean changed=false;
+void konamiCheck() {
+  if (!konami) {
+    if (keyCode==UP&&!upOne) {
+      upOne=true;
+      changed=true;
+    }
+    if (upOne&&!keyPressed) {
+      sOne=true;
+      changed=false;
+    }
+    if (keyPressed&&keyCode==UP&&sOne) {
+      upTwo=true;
+      changed=true;
+    }
+    if (upTwo&&!keyPressed) {
+      sTwo=true;
+      changed=false;
+    }
+    if (keyPressed&&keyCode==DOWN&&sTwo) {
+      downOne=true;
+      changed=true;
+    }
+    if (downOne&&!keyPressed) {
+      sThree=true;
+      changed=false;
+    }
+    if (keyPressed&&keyCode==DOWN&&sThree) {
+      downTwo=true;
+      changed=true;
+    }
+    if (downTwo&&!keyPressed) {
+      sFour=true;
+      changed=false;
+    }
+    if (keyPressed&&keyCode==LEFT&&sFour) {
+      leftOne=true;
+      changed=true;
+    }
+    if (leftOne&&!keyPressed) {
+      sFive=true;
+      changed=false;
+    }
+    if (keyPressed&&keyCode==RIGHT&&sFive) {
+      rightOne=true;
+      changed=true;
+    }
+    if (rightOne&&!keyPressed) {
+      sSix=true;
+      changed=false;
+    }
+    if (keyPressed&&keyCode==LEFT&&sSix) {
+      leftTwo=true;
+      changed=true;
+    }
+    if (leftTwo&&!keyPressed) {
+      sSeven=true;
+      changed=false;
+    }
+    if (keyPressed&&keyCode==RIGHT&&sSeven) {
+      rightTwo=true;
+      changed=true;
+    }
+    if (rightTwo&&!keyPressed) {
+      sEight=true;
+      changed=false;
+    }
+    if (keyPressed&&key=='b'&&sEight) {
+      b=true;
+      changed=true;
+    }
+    if (b&&!keyPressed) {
+      sNine=true;
+      changed=false;
+    }
+    if (keyPressed&&key=='a'&&sNine) {
+      a=true;
+      changed=true;
+    }
+    if (a&&!keyPressed) {
+      sTen=true;
+      changed=false;
+    }
+    if (keyCode==SHIFT&&sTen) {
+      konami=true;
+    }
+    if (keyPressed&&!changed) {
+      upOne=false;
+      upTwo=false;
+      downOne=false;
+      downTwo=false; 
+      leftOne=false;
+      rightOne=false;
+      leftTwo=false; 
+      rightTwo=false;
+      b=false; 
+      a=false;
+      start=false;
+      sOne=false;
+      sTwo=false;
+      sThree=false;
+      sFour=false;
+      sFive=false;
+      sSix=false;
+      sSeven=false;
+      sEight=false;
+      sNine=false;
+      sTen=false;
     }
   }
+}
+//-----------------------------------------------------------
+NormalParticle[] spots;
+double cAngle;
+double centerx=350, centery=150;
+
+class NormalParticle {
+  double x, y, angle=Math.random()*PI*2, speed=Math.random()*8;
+  int r=(int)(255-(speed*30)), g=(int)(255-(speed*20)), b=(int)(255-(speed*10));
+  //int r=(int)(Math.random()*200)+50,g=(int)(Math.random()*200)+50,b=(int)(Math.random()*200)+50;
+  public void move() {
+    x+=(speed*cos((float)angle));
+    y+=(speed*sin((float)angle));
+    if (direct()==true) {
+      angle+=.05;
+    } else {
+      angle-=.05;
+    }
+  }
+  public void show() {
+    image(okay, mouseX+(int)x, mouseY+(int)y);
+  }
+  boolean direct() {
+    if (speed>2) {
+      if (speed>4) {
+        if (speed>6) {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
+}
