@@ -1,11 +1,13 @@
-int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1, timer;
+int rows=14, cols=24, w=50, sRow=(rows/2)-1, sCol=(cols/2)-1,timer;
+double difficulty=.85;
 block[][] blocks=new block[cols][rows];
-boolean go=false, win=false, moved=false, konami=false;
+menu title;
+boolean go=false, win=false, moved=false, konami=false, menuScreen=true;
 PImage okay;
 
 void setup() {
   size(1201, 701);
-  background(180);
+  background(57,204,24);
   textAlign(CENTER);
   okay=loadImage("okay.png");
   for (int i=0; i<cols; i++) {
@@ -17,11 +19,15 @@ void setup() {
   for (int i=0; i<500; i++) {
     spots[i]=new NormalParticle();
   }
+  title=new menu();
 }
 
 
 void draw() {
-  if (!konami||!win) {
+  if (menuScreen) {
+    title.show();
+    title.check();
+  } else if (!konami||!win) {
     for (int i=0; i<cols; i++) {
       for (int j=0; j<rows; j++) {
         blocks[i][j].show();
@@ -58,10 +64,127 @@ void draw() {
     stroke(0);
     rect(0, 0, width, height);
   }
+  if(keyPressed&&key=='p'){
+    menuScreen=true;
+  }
+}
+
+class menu {
+  int selX, selY;
+  menu() {
+  }
+
+  void show() {
+    textSize(100);
+    fill(109,62,0);
+    text("MINESWEEPER",width/2,200);
+    //---------------
+    noFill();
+    stroke(109,62,0);
+    strokeWeight(3);
+    rect(300,400,200,100);
+    fill(106,62,0);
+    strokeWeight(1);
+    textSize(50);
+    text("Play",400,470);
+    //-----------------
+    noFill();
+    stroke(109,62,0);
+    strokeWeight(3);
+    rect(700,400,200,100);
+    fill(106,62,0);
+    strokeWeight(1);
+    textSize(50);
+    text("Medium",800,470);
+    if(difficulty==.85){
+      noStroke();
+      fill(0, 0, 100);
+      rect(700+(3*w/7)+200, 400+(2*w/7)+25, w/18, 4*w/7);
+      triangle(700+(3*w/7)+200, 400+(w/7)+25, 700+(5*w/7)+200, 400+(2*w/7)+25, 700+(3*w/7)+200, 400+(3*w/7)+25);
+      rect(700+(2.7*w/7)+200, 400+(6*w/7)+25, w/7, w/15);
+    }
+    else{
+      noStroke();
+      fill(57,204,24);
+      rect(910,550,100,100);
+    }
+    //---------------------
+    noFill();
+    stroke(109,62,0);
+    strokeWeight(3);
+    rect(700,250,200,100);
+    fill(106,62,0);
+    strokeWeight(1);
+    textSize(50);
+    text("Easy",800,320);
+    if(difficulty==.95){
+      noStroke();
+      fill(0, 0, 100);
+      rect(700+(3*w/7)+200, 250+(2*w/7)+25, w/18, 4*w/7);
+      triangle(700+(3*w/7)+200, 250+(w/7)+25, 700+(5*w/7)+200, 250+(2*w/7)+25, 700+(3*w/7)+200, 250+(3*w/7)+25);
+      rect(700+(2.7*w/7)+200, 250+(6*w/7)+25, w/7, w/15);
+    }
+    else{
+      noStroke();
+      fill(57,204,24);
+      rect(910,250,100,100);
+    }
+    //--------------------
+    noFill();
+    stroke(109,62,0);
+    strokeWeight(3);
+    rect(700,550,200,100);
+    fill(106,62,0);
+    strokeWeight(1);
+    textSize(50);
+    text("Hard",800,620);
+    if(difficulty==.75){
+      noStroke();
+      fill(0, 0, 100);
+      rect(700+(3*w/7)+200, 550+(2*w/7)+25, w/18, 4*w/7);
+      triangle(700+(3*w/7)+200, 550+(w/7)+25, 700+(5*w/7)+200, 550+(2*w/7)+25, 700+(3*w/7)+200, 550+(3*w/7)+25);
+      rect(700+(2.7*w/7)+200, 550+(6*w/7)+25, w/7, w/15);
+    }
+    else{
+      noStroke();
+      fill(57,204,24);
+      rect(910,550,100,100);
+    }
+  }
+
+  void check() {
+    if(selX<500&&selX>300&&selY<500&&selY>400){
+      menuScreen=false;
+      selX=0;
+      selY=0;
+    }
+     if(selX<900&&selX>700&&selY<500&&selY>400){
+       difficulty=.85;
+    }
+     if(selX<900&&selX>700&&selY<350&&selY>250){
+      difficulty=.95;
+    }
+    if(selX<900&&selX>700&&selY<650&&selY>550){
+      difficulty=.75;
+    }
+    
+  }
+
+  void setselX(int i) {
+    selX=i;
+  }
+
+  void setselY(int i) {
+    selY=i;
+  }
 }
 
 void mousePressed() {
-  if (!go) {
+  if (menuScreen) {
+    title.setselX(mouseX);
+    title.setselY(mouseY);
+  }
+  else if (!go&&!win) {
     for (int i=0; i<cols; i++) {
       for (int j=0; j<rows; j++) {
         if (mouseX>blocks[i][j].getX()&&mouseX<blocks[i][j].getX()+w+1) {
@@ -168,7 +291,7 @@ class block {
   int x, y, posX, posY, around=-1;
   boolean bomb, hit=false, flag=false;
   block(int i, int j) {
-    if (Math.random()>.85) {
+    if (Math.random()>difficulty) {
       bomb=true;
     }
     x=w*i;
