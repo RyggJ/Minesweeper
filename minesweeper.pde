@@ -66,6 +66,7 @@ void draw() {
   }
   if(keyPressed&&key=='p'){
     menuScreen=true;
+    background(57,204,24);
   }
 }
 
@@ -106,7 +107,7 @@ class menu {
     else{
       noStroke();
       fill(57,204,24);
-      rect(910,550,100,100);
+      rect(910,400,100,100);
     }
     //---------------------
     noFill();
